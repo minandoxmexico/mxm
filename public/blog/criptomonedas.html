@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Minando x México - Criptomonedas</title>
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://minandoxmexico.org/blog/criptomonedas">
+  <meta property="og:title" content="Minando por México: Artículo explicativo de criptomonedas">
+  <meta property="og:site_name" content="Minando por México">
+  <meta property="og:description" content="Ayúdanos a recaudar fondos para la reconstrucción de México con tan sólo mantener una pestaña de tu navegador abierta">
+  <meta property="og:tags" content="sismo2017 criptomonedas cryptocurency monero xmr">
+  <meta property="og:image" content="https://minandoxmexico.org/images/logo.png">
+  <meta property="og:image:width" content="380">
+  <meta property="og:image:height" content="380">
+  <meta name="description" content="Ayúdanos a recaudar fondos para la reconstrucción de México con tan sólo mantener una pestaña de tu navegador abierta">
+  <meta name="keywords" content="sismo2017 criptomonedas mexico monero crowd funding comunidad">
+  <meta name="author" content="Nubenautas">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <script src="https://coinhive.com/lib/coinhive.min.js"></script>
+  <script src="/js/libs.js?v=2.3"></script>
+  <script src="/js/mine.js?v=2.3"></script>
+  <script src="/js/dictionary.js?v=2.3"></script>
+  <link rel="stylesheet" href="/css/libs.css?v=2.3">
+  <link rel="stylesheet" href="/css/custom.css?v=2.3">
+</head>
+<body>
+  <div id="main-container">
+    <div class="container">
+      <div class="row">
+        <div class="center-text">
+          <h1 class="section-heading logo">
+            Minando <a href="/"><img src="/images/logo.png" height="190" style="vertical-align: middle;"></a> México
+          </h1>
+        </div>
+      </div>
+    </div>
+
+    <div class="section get-help center-text">
+      <div class="container center-text">
+        <section v-if="!authed">
+          <h5>{{ translate("CONNECT") }}...</h5>
+          <p>{{ translate("CONNECT_TEXT") }}</p>
+        </section>
+        <section nv-if="authed">
+          <div class="row">
+            <div class="one-third column">
+              <h5 class="mdi mdi-memory">
+                CPU:
+                <span class="link mdi mdi-minus-circle-outline" @click="removeThrottle"></span>
+                {{ Math.round( (1 - throttle) * 100 )}}%
+                <span class="link mdi mdi-plus-circle-outline" @click="addThrottle"></span>
+              </h5>
+            </div>
+            <div class="one-third column">
+              <h5>
+                <span class="mdi mdi-account-multiple">
+                  {{ translate("MINERS_CONNECTED") }}: {{ numUsers | number_i18n(0) }}
+                </span>
+              </h5>
+            </div>
+            <div class="one-third column">
+              <h5>
+                <span title="Aproximado en pesos mexicanos" class="mdi mdi-coin">
+                  {{ translate("RAISED") }}: ${{ mxn | number_i18n(2) }}
+                </span>
+              </h5>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class="container">
+        <div class="one-third column center-text">
+          <a class="mdi mdi-48px mdi-twitter" target="_blank" href="https://twitter.com/intent/user?screen_name=minandoxmexico"></a>
+          <a class="mdi mdi-48px mdi-facebook" target="_blank" href="https://www.facebook.com/minandoxmexico"></a>
+          <a class="mdi mdi-48px mdi-google-plus" target="_blank" href="https://plus.google.com/116863243056845806036"></a>
+          <h5>{{ translate("FOLLOW_US") }}</h5>
+        </div>
+        <div class="one-third column center-text">
+          <a class="button button-primary main-button mdi mdi-comment-text-outline" href="/minar"> CHAT &amp; STATS</a>
+          <p class="section-description"><a href="/#faq">{{ translate("HOW_IT_WORKS") }}</a></p>
+        </div>
+        <div class="one-third column center-text">
+          <a class="mdi mdi-48px mdi-facebook-box" target="_blank"
+            href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fminandoxmexico.org%2F">
+          </a>
+          <a class="mdi mdi-48px mdi-twitter-box" target="_blank"
+            href="https://twitter.com/share?url=https%3A%2F%2Fminandoxmexico.org%2F&text=Ayuda%20a%20la%20reconstrucción%20de%20México%20desde%20tu%20computadora">
+          </a>
+          <a class="mdi mdi-48px mdi-google-plus-box" target="_blank"
+            href="https://plus.google.com/share?url=https%3A%2F%2Fminandoxmexico.org%2F">
+          </a>
+          <h5>{{ translate("SHARE") }}</h5>
+        </div>
+      </div>
+    </div>
+
+    <div class="section categories categories-gray">
+      <div class="container">
+        <!-- faq -->
+        <h2 class="section-heading mdi mdi-coin"> Criptomonedas</h2>
+        <div clas="section-description">
+          <h4>Por Adair Chavez</h4>
+<p style="white-space: pre-wrap; text-align: justify">
+Imaginemos que queremos hacer una moneda alternativa para nuestra nueva ecoaldea. La idea es darle a cada miembro una cantidad igual para empezar e intercambiarlo entre nosotros por bienes. El valor de ésta moneda depende totalmente de la comunidad que la usa.
+
+Logísticamente lo más obvio/fácil sería crear un sistema de auditoría centralizado: un cuaderno. En éste cuaderno podemos anotar cada transacción para llevar un registro: Juan le da a Pedro 3 monedas. En cada renglón podemos escribir otra transacción. Todo funciona bien excepto por los problemas inherentes que vienen de un auditor central. Puede ser corrupto y anotar cosas que no son. Puede perder el control del cuaderno. Puede querer cobrar por auditar, etc.
+
+Las criptomonedas resuelven el conflicto del auditor central haciendo a cada usuario un nodo de una red auditora. La idea fue propuesta por Satoshi Nakamoto en su artículo: "<a href="https://bitcoin.org/bitcoin.pdf" target="_blank">Bitcoin: A Peer-to-Peer Electronic Cash System</a>".
+
+Para explicar como funciona esto regresaremos a la analogía del cuaderno. En una red de auditores, todos tienen un cuaderno completo con todas las transacciones que han existido. Ésto es la famosa blockchain.
+
+¿Pero cómo se ponen de acuerdo para ir agregando las transacciones a los cuadernos de todos?
+
+Cuando hay una nueva transacción que necesita ser validada en el sistema de auditoría, se distribuye por la red y cada nodo <b>intenta</b> agregarlo a su cuaderno.
+
+La idea detrás de bitcoin y otras criptomonedas basadas en blockchain es que el validar transacciones sea matemáticamente <b>difícil de hacer pero fácil de verificar</b>. Esto permite que los nodos compiten para ver quién encuentra la <i>solución</i> a como validar la transacción, pero cuando uno lo logra, éste lo publica en la red y ésta lo puede verificar rápidamente volviéndose consenso y todos los nodo intentarán validar las transacciones siguientes. Finalmente como incentivo para hacer el trabajo de validador y para generar nuevas monedas, el nodo que cierra el bloque recibe monedas a cambio. Esta recompensa baja con el tiempo para no devaluar la moneda. Esto es minar criptomonedas: participar en una red de auditoria de transacciones a cambio de unas monedas en el mismo sistema.
+
+Como solamente el nodo que cierra el bloque recibe la recompensa, existen “pools” de minado en donde muchas computadoras participan juntas en búsqueda del bloque y cuando se encuentra se reparten las ganancias en proporción al trabajo otorgado.
+
+Las criptomonedas se venden y compran todos los días en mercados especializados como los de las divisas. En bitcoin se compra-venden alrededor de $1,500,000,000 USD diarios y tiene un circulante de $73,709,026,706 USD [<a href="https://coinmarketcap.com/" target="_blank">referencia</a>]. Las personas dueñas de todas estas monedas son las que respaldan a red misma.
+
+Al cambiar un detalle en cómo se busca el sello del bloque o simplemente otra blockchain se puede hacer otra criptomoneda, hoy en dia es muy fácil hacer una criptomoneda y hay miles de ellas y 60 de ellas tienen más de $100,000,000 USD circulante. A pesar de que es fácil crear una criptomoneda no es nada fácil crear una idea novedosa que genere comunidad.
+</p>
+        </div>
+      </div>
+    </div>
+    <div class="section categories categories-white">
+      <div class="container">
+        <!-- contact -->
+        <h2 class="section-heading mdi mdi-comment-account-outline" id="contact"> {{ translate("CONTACT") }}</h2>
+        <div clas="section-description">
+          <div class="row">
+            <div class="column one-half right-text">
+              <h5><a href="https://plus.google.com/communities/100344561271735360788" class="mdi mdi-google-plus-box" target="_blank" dir="rtl"> {{ translate("GPLUS") }}</a></h5>
+              <h5><a href="https://plus.google.com/116863243056845806036" class="mdi mdi-google-plus" target="_blank" dir="rtl"> Google Plus</a></h5>
+              <h5><a href="mailto:info@minandoxmexico.org" class="mdi mdi-email-outline" title="info@minandoxmexico.org" dir="rtl"> {{ translate("MAIL") }}</a></h5>
+            </div>
+            <div class="column one-half">
+              <h5><a href="https://www.facebook.com/groups/minandoxmexico/" class="mdi mdi-facebook-box" target="_blank"> {{ translate("FACEBOOK_GROUP") }}</a></h5>
+              <h5><a href="https://www.facebook.com/minandoxmexico/" class="mdi mdi-facebook" target="_blank"> Facebook</a></h5>
+              <h5><a href="https://twitter.com/minandoxmexico" class="mdi mdi-twitter" target="_blank"> Twitter</a></h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="center-text">
+      <span>{{ translate("DEVELOPED_BY") }} <a target="_blank" href="https://nubenautas.com/">
+        <img src="https://nubenautas.com/imgs/nubenautas.svg" height="64px" style="vertical-align: middle;"> Nubenautas</a>
+      </span>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,421 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+var User = require('../models/User.js')
+var Workshift = require('../models/Workshift.js')
+var app = require('../app')
+var debug = require('debug')('moneda-colmena:server')
+var http = require('http')
+var request = require('request')
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || '7001')
+app.set('port', port)
+
+/**
+ * Create HTTP server.
+ */
+
+var server = http.createServer(app)
+var io = require('socket.io')(server)
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port)
+server.on('error', onError)
+server.on('listening', onListening)
+
+// Globals
+
+var connectedSockets = []
+var messages = []
+var site_data = {}
+
+var private = require('../config.json')
+
+var getSiteData = function(){
+  request.post({json:true, url:"https://api.coinhive.com/stats/site?secret="+private.key}, function (error, response, body){
+    if(error){
+      console.log("ERROR: ", error, site_data)
+      return
+    }
+    //console.log('got site datas for sockets')
+    site_data = {
+      hashesPerSecond: body.hashesPerSecond,
+      hashesTotal:     body.hashesTotal,
+      xmrPending:      body.xmrPending,
+      xmrPaid:         body.xmrPaid
+    }
+  })
+}
+
+var get_top = function(io) { // top users interval
+  User.find({})
+  .catch(err=>{})
+  .then(users=>{
+    io.emit('top total hashes',            topTotalHashes(connectedSockets))
+    io.emit('top total hashes ever',       topTotalHashesEver(connectedSockets, users))
+    io.emit('top hashes per second',       topHashesPerSecond(connectedSockets))
+    io.emit('top hashes per second ever',  topHashesPerSecondEver(connectedSockets, users))
+  })
+}
+
+var topHashesPerSecond = function(sockets){
+  let usersTempObj = {}
+  let users = []
+
+  sockets.forEach(s=>{
+    if(s.user){
+      let userSessions = sockets.filter(x=>{ return x.user && x.user.username === s.user.username })
+      existentUser = usersTempObj[s.user.username]
+      hPerS = s.sessionData.hashesPerSecond
+      if (existentUser){
+        existentUser.hashesPerSecond =  existentUser.hashesPerSecond + hPerS
+      }else{
+        usersTempObj[s.user.username] = {
+          username: s.username,
+          hashesPerSecond: s.sessionData.hashesPerSecond,
+          totalHashes: userSessions.reduce((acc,x)=>{ return x.sessionData.totalHashes + acc }, 0 ) + s.user.totalHashes,
+          totalTime:   userSessions.reduce((acc,x)=>{ return (Date.now() - x.sessionData.startTime) + acc }, 0 ) + s.user.totalTime,
+        }
+        users.push(usersTempObj[s.user.username])
+      }
+     }
+  })
+
+  //update all sockets with joint max
+  sockets.forEach(s=>{
+    if(s.user){
+      let this_user = users.find(u=>{ return u.username === s.user.username })
+      if(this_user.hashesPerSecond > s.sessionData.maxHashesPerSecond){
+        s.sessionData.maxHashesPerSecond = this_user.hashesPerSecond
+        s.emit('max hashes per second', s.sessionData.maxHashesPerSecond)
+      }
+    }
+  })
+
+  return users.sort((a,b)=>{
+    return b.hashesPerSecond - a.hashesPerSecond
+  })
+}
+
+// NOT USED not ready for multidevice
+var topTotalHashes = function(sockets){
+  return sockets.sort((a,b)=>{
+    return b.sessionData.totalHashes - a.sessionData.totalHashes
+  }).slice(0,20).map(s=>{
+    return {
+      username: s.username,
+      totalHashes: s.sessionData.totalHashes
+    }
+  })
+}
+
+var topTotalHashesEver = function(sockets, users){
+  return users.map(u=>{
+    let userSessions = sockets.filter(x=>{ return x.user && x.user.username === u.username })
+    return {
+      maxHashesPerSecond: Math.max( ...userSessions.map(s=>{return s.sessionData.maxHashesPerSecond}).concat(u.maxHashesPerSecond) ),
+      totalHashes: userSessions.reduce((acc,x)=>{ return x.sessionData.totalHashes + acc }, 0 ) + u.totalHashes,
+      username: u.username
+    }
+  }).filter(x=>{return x.username}).sort((a,b)=>{
+    return b.totalHashes - a.totalHashes
+  }).slice(0,20)
+}
+
+var topHashesPerSecondEver = function(sockets, users){
+  return users.map(u=>{
+    let userSessions = sockets.filter(x=>{ return x.user && (x.user.username === u.username) })
+    return {
+      maxHashesPerSecond: Math.max( ...userSessions.map(s=>{return s.sessionData.maxHashesPerSecond}).concat(u.maxHashesPerSecond) ),
+      username: u.username
+    }
+  }).filter(x=>{return x.username}).sort((a,b)=>{
+    return b.maxHashesPerSecond - a.maxHashesPerSecond
+  }).slice(0,20)
+}
+
+io.on('connection', (socket)=>{
+
+  connectedSockets.push(socket)
+
+  socket.sessionData = {
+    totalHashes: 0,
+    hashesPerSecond: 0,
+    maxHashesPerSecond: 0,
+    startTime:  Date.now(),
+    //jointMaxHashesPerSecond: 0
+  }
+
+  socket.on('join', function(data){
+    //console.log("join", data)
+    Promise.all([
+      User.findOne({_id: data.new_id}),
+      User.findOne({_id: data.old_id})
+    ])
+    .catch(err=>{ console.log("error", err); socket.emit('error') })
+    .then(([leader,follower])=>{
+      //console.log("leader",leader)
+      //console.log("follower", follower)
+      leader.totalTime   += follower.totalTime
+      leader.totalHashes += follower.totalHashes
+      leader.maxSessionTime = Math.max(leader.maxSessionTime, follower.maxSessionTime)
+      leader.maxSessionHashes = Math.max(leader.maxSessionHashes, follower.maxSessionHashes)
+      leader.maxHashesPerSecond = Math.max(leader.maxHashesPerSecond, follower.maxHashesPerSecond)
+
+      follower.delete()
+      .catch(err=>{ console.log("error", err); socket.emit('error') })
+      .then(()=>{
+
+        socket.user = leader
+
+        socket.sessionData.maxHashesPerSecond = leader.maxHashesPerSecond
+        socket.emit('user is', leader)
+
+        if(leader.username){
+          socket.username = leader.username
+          socket.emit('login', {
+            numUsers: connectedSockets.length,
+            messages: messages,
+            username: leader.username
+          })
+        }
+      })
+    })
+  })
+
+  //socket.user = {totalHashes: 0}
+
+  socket.on('my id is', function (data){
+    User.findOne({_id: data.id})
+    .catch(err=>{ console.log("error", err); socket.emit('error') })
+    .then(user=>{
+      if(!user){
+        socket.emit('unknown id')
+      }else{
+        //socket.totalHashes = user.totalHashes
+        socket.user = user
+        socket.sessionData.maxHashesPerSecond = user.maxHashesPerSecond
+
+        socket.emit('user is', user)
+        io.emit('user count', {numUsers: connectedSockets.length})
+        //login to chat if has nick
+
+        if(user.username){
+          socket.username = user.username
+          socket.emit('login', {
+            numUsers: connectedSockets.length,
+            messages: messages,
+            username: user.username
+          })
+        }
+      }
+    })
+  })
+
+  socket.on('im new', function (data){
+    User.create().save()
+    .catch(err=>{ console.log("error", err); socket.emit('error') })
+    .then(user=>{
+        socket.user = user
+        socket.username = user.username
+
+        socket.emit('user is', user)
+        io.emit('user count', {numUsers: connectedSockets.length})
+    })
+  })
+
+  socket.on('new message', function (data) {
+    // we tell the client to execute 'new message'
+    let m = {
+      username: socket.username,
+      message: data,
+      time:    Date.now()
+    }
+    messages.push(m)
+
+    if(messages.length > 1000){
+      messages.shift()
+    }
+
+    socket.broadcast.emit('new message', m)
+  })
+
+  socket.on('add username', function (username) {
+
+    User.findOne({username: username})
+    .catch(err=>{ console.log("error", err); socket.emit('error') })
+    .then(user=>{
+      if(user){
+        socket.emit('used username')
+        return
+      }
+
+      // we store the username in the socket session for this client
+      socket.username = username
+      socket.user.username = username
+
+      socket.user
+      .save()
+      .catch(err=>{ console.log("error", err); socket.emit('error') })
+      .then(saved=>{
+
+        socket.user = saved
+
+        socket.emit('login', {
+          numUsers: connectedSockets.length,
+          messages: messages,
+          username: saved.username
+        })
+        // echo globally (all clients) that a person has connected
+        socket.broadcast.emit('user joined', {
+          username: socket.username,
+          numUsers: connectedSockets.length
+        })
+      })
+
+    })
+  })
+
+
+  socket.on('max hashes per second', function(data){
+    socket.sessionData.maxHashesPerSecond = data
+  })
+
+  socket.on('session data', function(data){
+    //console.log("got session data")
+    socket.sessionData.totalHashes     = data.totalHashes
+    socket.sessionData.hashesPerSecond = data.hashesPerSecond
+  })
+
+  socket.on('disconnect', function (reason) {
+
+    ////////////////////////////////////////
+    // AQUI HAY SUPER PARCHE, RECUERDEN!! //
+    ////////////////////////////////////////
+
+    //console.log("disconnect reason:", reason)
+    // socket.user.workshifts.push(Workshift.create({
+    //   totalHashes: socket.sessionData.totalHashes
+    // }))
+
+    if(socket.user && socket.sessionData){
+      User.findOne({_id: socket.user._id})
+      .catch(err=>{ console.log("error", err); socket.emit('error') })
+      .then(user=>{
+
+        if(!user){console.log('funky'); return}
+
+        let sessionTime = Date.now() - socket.sessionData.startTime
+        user.totalHashes += socket.sessionData.totalHashes
+        user.totalTime += sessionTime
+
+        if(sessionTime > user.maxSessionTime){
+          user.maxSessionTime = sessionTime
+        }
+
+        if(socket.sessionData.maxHashesPerSecond > user.maxHashesPerSecond){
+          user.maxHashesPerSecond = socket.sessionData.maxHashesPerSecond
+        }
+
+        user.save()
+        .catch(err=>{ console.log("error", err); socket.emit('error') })
+        .then(saveduser=>{
+          var i = connectedSockets.indexOf(socket)
+          connectedSockets.splice(i,1)
+          io.emit('user count', {numUsers: connectedSockets.length})
+        })
+      })
+    }
+    else{
+      var i = connectedSockets.indexOf(socket)
+      connectedSockets.splice(i,1)
+      io.emit('user count', {numUsers: connectedSockets.length})
+      //console.log("disconected without user or session")
+    }
+  })
+
+  socket.emit('who are you?')
+  io.emit('user count', {numUsers: connectedSockets.length})
+  get_top(io)
+  getSiteData()
+  io.emit('site data', site_data)
+
+})
+
+setInterval(function(){get_top(io)}, 20000)
+
+setInterval(getSiteData, 7000)
+
+setInterval(function(){
+  io.emit('site data', site_data)
+}, 3000)
+
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10)
+
+  if (isNaN(port)) {
+    // named pipe
+    return val
+  }
+
+  if (port >= 0) {
+    // port number
+    return port
+  }
+
+  return false
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges')
+      process.exit(1)
+      break
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use')
+      process.exit(1)
+      break
+    default:
+      throw error
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address()
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port
+  debug('Listening on ' + bind)
+}

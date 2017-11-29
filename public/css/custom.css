@@ -1,0 +1,203 @@
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Raleway'), local('Raleway-Regular'),
+       url('../fonts/raleway-v11-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../fonts/raleway-v11-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+body { font-size: 2em; }
+ul { -webkit-padding-start: 0px; }
+a { text-decoration: none; }
+
+.center-text { text-align: center; }
+.right-text  { text-align: right; }
+.left-text   { text-align: left; }
+.pointer     { cursor: pointer; }
+.num         { font-family: monospace; }
+
+.lang {
+  display: inline-block;
+  overflow: hidden;
+  height: 2em;
+}
+
+.lang:hover {
+  height: 100%;
+}
+
+.lang li {
+  display: block;
+  padding: 0px 20px;
+  line-height: 2em;
+  margin: 0;
+}
+
+.lang li:hover{
+  background-color: #eee;
+}
+
+/* Sections
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.section {
+  padding: 8rem 0 7rem;
+}
+.section-heading {
+  text-align: center;
+}
+.section-heading,
+.section-description {
+  margin-bottom: 1.2rem;
+}
+
+/* Values
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.values {
+  background-color: gray;
+  background-size: cover;
+  color: #fff;
+  padding-bottom: 5rem;
+}
+.value-multiplier {
+  margin-bottom: .5rem;
+  color: #11DFC7;
+}
+.value-heading {
+  margin-bottom: .3rem;
+}
+.value-description {
+  opacity: .8;
+  font-weight: 300;
+}
+
+
+/* Categories
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.categories-white {
+  background-color: white;
+  background-size: cover;
+  color: #777;
+}
+.categories-gray {
+  background-color: gray;
+  background-size: cover;
+  color: #fff;
+}
+.categories-gray a {
+  color: #10D0C0;
+}
+.categories-gray a:hover {
+  color: #11DFC7;
+}
+.categories .section-description {
+  margin-bottom: 4rem;
+}
+
+/* Bigger than 550 */
+@media (min-width: 550px) {
+  .section {
+    padding: 12rem 0 11rem;
+  }
+  .hero {
+    padding-bottom: 2rem;
+    padding-top: 8rem;
+    text-align: left;
+    height: 165px;
+  }
+  .hero-heading {
+    text-align: center;
+    font-size: 3.5rem;
+    padding-top: 8rem;
+  }
+}
+
+/* Bigger than 750 */
+@media (min-width: 750px) {
+  .hero {
+    height: 190px;
+  }
+  .hero-heading {
+    font-size: 3.6vh;
+    padding-top: 8rem;
+  }
+  .section {
+    padding: 14rem 0 5rem;
+  }
+  .hero {
+    padding: 6rem 0 4rem;
+  }
+  .section-description {
+    max-width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .categories {
+    padding: 15rem 0 8rem;
+  }
+  .logo {
+    padding-right: 1em
+  }
+}
+
+/* Bigger than 1000 */
+@media (min-width: 1000px) {
+  .section {
+    padding: 5rem 0 5rem;
+  }
+  .hero {
+    padding: 5rem 0;
+  }
+  .hero-heading {
+    font-size: 4.2rem;
+    padding-top: 8rem;
+  }
+}
+
+.blue { color: blue; }
+.green { color: green; }
+.gray { color: gray; }
+.red { color: red; }
+.link { color: #1EAEDB; cursor: pointer; }
+.link:hover { color: #0FA0CE; cursor: pointer; }
+
+.main-button {
+  font-size: 1.2em;
+  padding: 3% 7%;
+  border-radius: 30px;
+  height: 2.3em;
+}
+
+.chatArea {
+    height: 100%;
+    background-color: #fdfdfd;
+    border: 1px solid #eee;
+}
+
+.inputChat {
+    border: 2px solid #555;
+    background-color: #f3f3f3;
+    color: #888;
+    height: 1.8em;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-left: -10px;
+}
+
+.messages {
+    height: 100%;
+    margin: 0;
+    overflow-y: scroll;
+    padding: 10px 20px 10px 20px;
+    font-size: 90%;
+    list-style: none;
+    word-wrap: break-word;
+    box-sizing: border-box;
+    max-height: 25em;
+    text-align: left;
+}
+
+.messages li {
+    margin-bottom: .3rem;
+}

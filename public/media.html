@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Minando x México - Media</title>
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://minandoxmexico.org/media">
+  <meta property="og:title" content="Minando por México: Aprende de criptodivisas y blockchain mientras donas">
+  <meta property="og:site_name" content="Minando por México">
+  <meta property="og:description" content="Ayúdanos a recaudar fondos para la reconstrucción de México con tan sólo mantener una pestaña de tu navegador abierta">
+  <meta property="og:tags" content="sismo2017 criptomonedas cryptocurency monero xmr">
+  <meta property="og:image" content="https://minandoxmexico.org/images/logo.png">
+  <meta property="og:image:width" content="380">
+  <meta property="og:image:height" content="380">
+  <meta name="description" content="Ayúdanos a recaudar fondos para la reconstrucción de México con tan sólo mantener una pestaña de tu navegador abierta">
+  <meta name="keywords" content="sismo2017 criptomonedas mexico monero crowd funding comunidad">
+  <meta name="author" content="Nubenautas">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <script src="https://coinhive.com/lib/coinhive.min.js"></script>
+  <script src="/js/libs.js?v=2.3"></script>
+  <script src="/js/mine.js?v=2.3"></script>
+  <script src="/js/dictionary.js?v=2.3"></script>
+  <link rel="stylesheet" href="/css/libs.css?v=2.3">
+  <link rel="stylesheet" href="/css/custom.css?v=2.3">
+</head>
+<body>
+  <div id="main-container">
+    <div class="container">
+      <div class="row">
+        <div class="center-text">
+          <h1 class="section-heading logo">
+            Minando <a href="/"><img src="/images/logo.png" height="190" style="vertical-align: middle;"></a> México
+          </h1>
+        </div>
+      </div>
+    </div>
+
+    <div class="section get-help center-text">
+      <div class="container center-text">
+        <section v-if="!authed">
+          <h5>{{ translate("CONNECT") }}...</h5>
+          <p>{{ translate("CONNECT_TEXT") }}</p>
+        </section>
+        <section nv-if="authed">
+          <div class="row">
+            <div class="one-third column">
+              <h5 class="mdi mdi-memory">
+                CPU:
+                <span class="link mdi mdi-minus-circle-outline" @click="removeThrottle"></span>
+                {{ Math.round( (1 - throttle) * 100 )}}%
+                <span class="link mdi mdi-plus-circle-outline" @click="addThrottle"></span>
+              </h5>
+            </div>
+            <div class="one-third column">
+              <h5>
+                <span class="mdi mdi-account-multiple">
+                  {{ translate("MINERS_CONNECTED") }}: {{ numUsers | number_i18n(0) }}
+                </span>
+              </h5>
+            </div>
+            <div class="one-third column">
+              <h5>
+                <span title="Aproximado en pesos mexicanos" class="mdi mdi-coin">
+                  {{ translate("RAISED") }}: ${{ mxn | number_i18n(2) }}
+                </span>
+              </h5>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class="container">
+        <div class="one-third column center-text">
+          <a class="mdi mdi-48px mdi-twitter" target="_blank" href="https://twitter.com/intent/user?screen_name=minandoxmexico"></a>
+          <a class="mdi mdi-48px mdi-facebook" target="_blank" href="https://www.facebook.com/minandoxmexico"></a>
+          <a class="mdi mdi-48px mdi-google-plus" target="_blank" href="https://plus.google.com/116863243056845806036"></a>
+          <h5>{{ translate("FOLLOW_US") }}</h5>
+        </div>
+        <div class="one-third column center-text">
+          <a class="button button-primary main-button mdi mdi-comment-text-outline" href="/minar"> CHAT &amp; STATS</a>
+          <p class="section-description"><a href="/#faq">{{ translate("HOW_IT_WORKS") }}</a></p>
+        </div>
+        <div class="one-third column center-text">
+          <a class="mdi mdi-48px mdi-facebook-box" target="_blank"
+            href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fminandoxmexico.org%2F">
+          </a>
+          <a class="mdi mdi-48px mdi-twitter-box" target="_blank"
+            href="https://twitter.com/share?url=https%3A%2F%2Fminandoxmexico.org%2F&text=Ayuda%20a%20la%20reconstrucción%20de%20México%20desde%20tu%20computadora">
+          </a>
+          <a class="mdi mdi-48px mdi-google-plus-box" target="_blank"
+            href="https://plus.google.com/share?url=https%3A%2F%2Fminandoxmexico.org%2F">
+          </a>
+          <h5>{{ translate("SHARE") }}</h5>
+        </div>
+      </div>
+    </div>
+
+    <div class="section categories categories-gray">
+      <div class="container">
+        <!-- faq -->
+        <h2 class="section-heading mdi mdi-youtube-play"> Media</h2>
+        <h4>{{ translate("CRYPTO") }}</h4>
+        <div class="row">
+          <div class="one-half column">
+            <iframe width="460" height="260" src="https://www.youtube.com/embed/Gc2en3nHxA4?rel=0" frameborder="0" allowfullscreen></iframe>
+            <iframe width="460" height="260" src="https://www.youtube.com/embed/s4g1XFU8Gto?rel=0" frameborder="0" allowfullscreen></iframe>
+          </div>
+          <div class="one-half column">
+            <iframe width="460" height="260" src="https://www.youtube.com/embed/kubGCSj5y3k?rel=0" frameborder="0" allowfullscreen></iframe>
+            <iframe width="460" height="260" src="https://www.youtube.com/embed/k0HmrSfJwhU?rel=0" frameborder="0" allowfullscreen></iframe>
+          </div>
+        </div>
+        <h4>TED Talks</h4>
+        <div class="row">
+          <div class="one-half column">
+            <iframe width="460" height="260" src="https://www.youtube.com/embed/a53YgjlGM2c?rel=0" frameborder="0" allowfullscreen></iframe>
+            <iframe width="460" height="260" src="https://www.youtube.com/embed/k53LUZxUF50?rel=0" frameborder="0" allowfullscreen></iframe>
+            <iframe width="460" height="260" src="https://www.youtube.com/embed/Ft8dSvdH2ek?rel=0" frameborder="0" allowfullscreen></iframe>
+            <iframe width="460" height="260" src="https://www.youtube.com/embed/Vzjtvt77mgc?rel=0" frameborder="0" allowfullscreen></iframe>
+          </div>
+          <div class="one-half column">
+            <iframe width="460" height="260" src="https://www.youtube.com/embed/0GL9PTQiqxw?rel=0" frameborder="0" allowfullscreen></iframe>
+            <iframe width="460" height="260" src="https://www.youtube.com/embed/A1Vbrxkqjwc?rel=0" frameborder="0" allowfullscreen></iframe>
+            <iframe width="460" height="260" src="https://www.youtube.com/embed/c8mdr8iwX20?rel=0" frameborder="0" allowfullscreen></iframe>
+            <iframe width="460" height="260" src="https://www.youtube.com/embed/WnEYakUxsHU?rel=0" frameborder="0" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section categories categories-white">
+      <div class="container">
+        <!-- contact -->
+        <h2 class="section-heading mdi mdi-comment-account-outline" id="contact"> {{ translate("CONTACT") }}</h2>
+        <div clas="section-description">
+          <div class="row">
+            <div class="column one-half right-text">
+              <h5><a href="https://plus.google.com/communities/100344561271735360788" class="mdi mdi-google-plus-box" target="_blank" dir="rtl"> {{ translate("GPLUS") }}</a></h5>
+              <h5><a href="https://plus.google.com/116863243056845806036" class="mdi mdi-google-plus" target="_blank" dir="rtl"> Google Plus</a></h5>
+              <h5><a href="mailto:info@minandoxmexico.org" class="mdi mdi-email-outline" title="info@minandoxmexico.org" dir="rtl"> {{ translate("MAIL") }}</a></h5>
+            </div>
+            <div class="column one-half">
+              <h5><a href="https://www.facebook.com/groups/minandoxmexico/" class="mdi mdi-facebook-box" target="_blank"> {{ translate("FACEBOOK_GROUP") }}</a></h5>
+              <h5><a href="https://www.facebook.com/minandoxmexico/" class="mdi mdi-facebook" target="_blank"> Facebook</a></h5>
+              <h5><a href="https://twitter.com/minandoxmexico" class="mdi mdi-twitter" target="_blank"> Twitter</a></h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="center-text">
+      <span>{{ translate("DEVELOPED_BY") }} <a target="_blank" href="https://nubenautas.com/">
+        <img src="https://nubenautas.com/imgs/nubenautas.svg" height="64px" style="vertical-align: middle;"> Nubenautas</a>
+      </span>
+    </div>
+  </div>
+</body>
+</html>

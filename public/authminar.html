@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Minando x México: Minero</title>
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://minandoxmexico.org/minar">
+  <meta property="og:title" content="Minando por México: Minero, chat y estadística">
+  <meta property="og:site_name" content="Minando por México">
+  <meta property="og:description" content="Ayúdanos a recaudar fondos para la reconstrucción de México con tan sólo mantener una pestaña de tu navegador abierta">
+  <meta property="og:tags" content="sismo2017 criptomonedas cryptocurency monero xmr">
+  <meta property="og:image" content="https://minandoxmexico.org/images/logo.png">
+  <meta property="og:image:width" content="380">
+  <meta property="og:image:height" content="380">
+  <meta name="description" content="Ayúdanos a recaudar fondos para la reconstrucción de México con tan sólo mantener una pestaña de tu navegador abierta">
+  <meta name="keywords" content="sismo2017 criptomonedas mexico monero crowd funding comunidad">
+  <meta name="author" content="Nubenautas">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <script src="https://authedmine.com/lib/authedmine.min.js"></script>
+  <script src="/js/libs.js?v=2.3"></script>
+  <script src="/js/mine.js?v=2.3"></script>
+  <script src="/js/dictionary.js?v=2.3"></script>
+  <link rel="stylesheet" href="/css/libs.css?v=2.3">
+  <link rel="stylesheet" href="/css/custom.css?v=2.3">
+</head>
+<body style="color: #555; background-color: #fefefe">
+  <div id="main-container" class="container center-text">
+    <ul class="lang">
+      <li><a style="padding: 0 5px" href="#"><span class="mdi mdi-earth"></span> lang <span class="mdi mdi-earth"></span></a></li>
+      <li v-for="(value, key) in langs" @click="setLang(key)"><a style="padding: 0 5px" href="#">{{ value }}</a></li>
+    </ul>
+    <div class="row">
+      <div class="two-third column">
+        <h1 class="section-heading logo">
+          Minando <a href="/"><img src="/images/logo.png" height="190" style="vertical-align: middle;"></a> México
+        </h1>
+        <section v-if="!authed">
+          <h5>{{ translate("CONNECT") }}...</h5>
+          <p>{{ translate("CONNECT_TEXT") }}</p>
+        </section>
+        <section nv-if="authed">
+          <hr>
+          <div class="row">
+            <div class="one-half column">
+              <h3 class="mdi mdi-worker"> {{ translate("MINING") }}</h3>
+              <h5 class="mdi mdi-memory">
+                CPU:
+                <span class="link mdi mdi-minus-circle-outline" @click="removeThrottle"></span>
+                <span class="num">{{ Math.round( (1 - throttle) * 100 )}}%</span>
+                <span class="link mdi mdi-plus-circle-outline" @click="addThrottle"></span>
+              </h5>
+              <h5 title="Hashes per Second" class="mdi mdi-speedometer">
+                {{ translate("SPEED") }}: <span class="num">{{ hashesPerSecond | number_i18n(1) }} H/s</span>
+                <small>
+                  <br>({{ translate("RECORD") }}: <span class="num">{{ Math.max(user.maxHashesPerSecond, maxHashesPerSecond) | number_i18n(1) }} H/s</span>)
+                </small>
+              </h5>
+              <h5 title="KiloHashes" class="mdi mdi-shovel">
+                {{ translate("TOTAL_MINED") }}: <span class="num">{{ (user.totalHashes + totalHashes) / 1000 | number_i18n(1) }} KH</span>
+              </h5>
+              <div v-if="!username">
+                <small>{{ translate("SESSION") }}</small>
+              </div>
+              <div v-if="username">
+                <small>
+                  <a :href="`https://minandoxmexico.org/minar?id=${localStorage.id}`">https://minandoxmexico.org/minar?id={{ localStorage.id }}</a><br>
+                  {{ translate("PROFILE_TEXT") }}
+                </small>
+              </div>
+            </div>
+            <div class="one-half column">
+              <h3 class="mdi mdi-web"> {{ translate("COMMUNITY") }}</h3>
+              <h5><span class="mdi mdi-account-multiple">
+                {{ translate("MINERS_CONNECTED") }}: <span class="num">{{ numUsers | number_i18n(0) }}</span>
+              </span></h5>
+              <h5><span title="Hashes por Segundo" class="mdi mdi-speedometer">
+                {{ translate("TEAM_SPEED") }}: <span class="num">{{ siteHashesPerSecond | number_i18n(1) }} H/s</span>
+              </span></h5>
+              <h5><span title="MegaHashes procesados" class="mdi mdi-shovel">
+                {{ translate("TOTAL_MINED") }}: <span class="num">{{ (siteHashesTotal / 1000000) | number_i18n(1) }} MH</span>
+              </span></h5>
+              <h5><span title="Aproximado en pesos mexicanos" class="mdi mdi-coin">
+                {{ translate("RAISED") }}: <span class="num">${{ mxn | number_i18n(2) }} MXN*</span>
+              </span></h5>
+              <h6><b>*</b> {{ translate("TOTAL_EXCHANGE") }}:<br>
+                <span class="num">{{ xmr | number_i18n(5) }} XMR @ {{ xmr_usd | number_i18n(2) }} USD/XMR &amp; {{ usd_mxn | number_i18n(2) }} MXN/USD</span>
+              </h6>
+            </div>
+          </div>
+          <a class="mdi mdi-information-outline" href="/#tech"> {{ translate("TECH_INFO") }}</a>
+          <hr>
+        </section>
+        <section>
+          <div class="row">
+            <h4 class="mdi mdi-seal"> {{ translate("DONATIONS") }}</h4>
+            <div class="row">
+              <div class="four columns left-text">
+                <h5>{{ translate("MINER") }}</h5>
+              </div>
+              <div class="four columns center-text">
+                <h5>{{ translate("DATE") }}</h5>
+              </div>
+              <div class="four columns right-text">
+                <h5>{{ translate("AMOUNT") }}</h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="four columns left-text">Carol</div>
+              <div class="four columns center-text"><span class="num">2017-10-08</span></div>
+              <div class="four columns right-text"><span class="num">0.50000 XMR</span></div>
+            </div>
+          </div>
+          <hr>
+        </section>
+        <section>
+          <h3 class="section-heading mdi mdi-comment-text-outline"> {{ translate("MINERS_CHAT") }}</h3>
+          <div class="chatArea">
+            <ul class="messages">
+              <li v-for="message in messages">
+                <span v-bind:style="{ color: getUsernameColor(message.username) }"
+                v-html="message.username?'['+(new Date(message.time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: false}))+'] '+message.username+': ':''">
+                </span><span v-html='message.message'></span>
+              </li>
+            </ul>
+          </div>
+          <input class="inputMessage inputChat" v-if="username" placeholder="chat..." maxlength="400">
+          <input class="usernameInput inputChat" v-if="!username" placeholder="nick..." maxlength="15" id="nick">
+          <p>
+            <a href="#nick" @click="removeUsername">{{ translate("CHANGE_NICK") }}</a> | <a href="/#faq">{{ translate("FAQ") }}</a>
+            <br>{{ translate("IN_CHAT") }}
+            <br>{{ translate("JOIN_GROUP") }}:
+            <br><a href="https://www.facebook.com/groups/minandoxmexico/" target="_blank"> {{ translate("FACEBOOK_GROUP") }}</a>
+            &amp; <a href="https://plus.google.com/communities/100344561271735360788" target="_blank"> {{ translate("GPLUS") }}</a>
+          </p>
+          <hr>
+        </section>
+        <section>
+          <div class="row">
+            <h4 class="mdi mdi-trophy-variant"> {{ translate("MINING_RECORD") }}</h4>
+            <div class="row">
+              <div class="three columns left-text">
+                <h5>{{ translate("MINER") }}</h5>
+              </div>
+              <div class="three columns right-text">
+                <h5>{{ translate("TIME") }}</h5>
+              </div>
+              <div class="three columns right-text">
+                <h5>{{ translate("MINED") }}</h5>
+              </div>
+              <div class="three columns right-text">
+                <h5>{{ translate("SPEED") }}</h5>
+              </div>
+            </div>
+            <div class="row" v-for="t in topHashesPerSecond">
+              <div class="three columns left-text" v-html="t.username?t.username:'anónimos'"></div>
+              <div class="three columns right-text">
+                <span>{{ t.totalTime | timeSince}}</span>
+              </div>
+              <div class="three columns right-text">
+                <span class="num">{{ (t.totalHashes / 1000000) | number_i18n(1) }} MH</span>
+              </div>
+              <div class="three columns right-text">
+                <span class="num">{{ t.hashesPerSecond | number_i18n(1) }} H/s</span>
+              </div>
+            </div>
+          </div>
+          <br>
+          <a class="mdi mdi-account-card-details" href="/#about"> {{ translate("ABOUT_US") }}</a>
+          <hr>
+        </section>
+        <section>
+          <h3>{{ translate("HELP_SPREAD") }}</h3>
+          <div class="container">
+            <div class="one-half column center-text">
+              <a class="mdi mdi-48px mdi-twitter" target="_blank" href="https://twitter.com/intent/user?screen_name=minandoxmexico"></a>
+              <a class="mdi mdi-48px mdi-facebook" target="_blank" href="https://www.facebook.com/minandoxmexico"></a>
+              <a class="mdi mdi-48px mdi-google-plus" target="_blank" href="https://plus.google.com/116863243056845806036"></a>
+              <h5>{{ translate("FOLLOW_US") }}</h5>
+            </div>
+            <div class="one-half column center-text">
+              <a class="mdi mdi-48px mdi-facebook-box" target="_blank"
+                href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fminandoxmexico.org%2F">
+              </a>
+              <a class="mdi mdi-48px mdi-twitter-box" target="_blank"
+                href="https://twitter.com/share?url=https%3A%2F%2Fminandoxmexico.org%2F&text=Ayuda%20a%20la%20reconstrucción%20de%20México%20desde%20tu%20computadora">
+              </a>
+              <a class="mdi mdi-48px mdi-google-plus-box" target="_blank"
+                href="https://plus.google.com/share?url=https%3A%2F%2Fminandoxmexico.org%2F">
+              </a>
+              <h5>{{ translate("SHARE") }}</h5>
+            </div>
+          </div>
+          <hr>
+          <a href="/#contact"><h4 class="mdi mdi-comment-account-outline"> {{ translate("CONTACT") }}</h4></a>
+          <span>{{ translate("DEVELOPED_BY") }} <a target="_blank" href="https://nubenautas.com/">
+            <img src="https://nubenautas.com/imgs/nubenautas.svg" height="64px" style="vertical-align: middle;"> Nubenautas</a>
+          </span>
+        </section>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

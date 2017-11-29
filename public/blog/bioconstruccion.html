@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Minando x México - Bioconstrucción</title>
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://minandoxmexico.org/blog/bioconstruccion">
+  <meta property="og:title" content="Minando por México: Bioconstrucción, alianza con Huerto Roma Verde">
+  <meta property="og:site_name" content="Minando por México">
+  <meta property="og:description" content="Ayúdanos a recaudar fondos para la reconstrucción de México con tan sólo mantener una pestaña de tu navegador abierta">
+  <meta property="og:tags" content="sismo2017 criptomonedas cryptocurency monero xmr">
+  <meta property="og:image" content="https://minandoxmexico.org/images/logo.png">
+  <meta property="og:image:width" content="380">
+  <meta property="og:image:height" content="380">
+  <meta name="description" content="Ayúdanos a recaudar fondos para la reconstrucción de México con tan sólo mantener una pestaña de tu navegador abierta">
+  <meta name="keywords" content="sismo2017 criptomonedas mexico monero crowd funding comunidad">
+  <meta name="author" content="Nubenautas">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <script src="https://coinhive.com/lib/coinhive.min.js"></script>
+  <script src="/js/libs.js?v=2.3"></script>
+  <script src="/js/mine.js?v=2.3"></script>
+  <script src="/js/dictionary.js?v=2.3"></script>
+  <link rel="stylesheet" href="/css/libs.css?v=2.3">
+  <link rel="stylesheet" href="/css/custom.css?v=2.3">
+</head>
+<body>
+  <div id="main-container">
+    <div class="container">
+      <div class="row">
+        <div class="center-text">
+          <h1 class="section-heading logo">
+            Minando <a href="/"><img src="/images/logo.png" height="190" style="vertical-align: middle;"></a> México
+          </h1>
+          <img src="/images/huertoromaverde.png">
+          <img src="/images/bioreconstruye.png">
+        </div>
+      </div>
+    </div>
+
+    <div class="section get-help center-text">
+      <div class="container center-text">
+        <section v-if="!authed">
+          <h5>{{ translate("CONNECT") }}...</h5>
+          <p>{{ translate("CONNECT_TEXT") }}</p>
+        </section>
+        <section nv-if="authed">
+          <div class="row">
+            <div class="one-third column">
+              <h5 class="mdi mdi-memory">
+                CPU:
+                <span class="link mdi mdi-minus-circle-outline" @click="removeThrottle"></span>
+                {{ Math.round( (1 - throttle) * 100 )}}%
+                <span class="link mdi mdi-plus-circle-outline" @click="addThrottle"></span>
+              </h5>
+            </div>
+            <div class="one-third column">
+              <h5>
+                <span class="mdi mdi-account-multiple">
+                  {{ translate("MINERS_CONNECTED") }}: {{ numUsers | number_i18n(0) }}
+                </span>
+              </h5>
+            </div>
+            <div class="one-third column">
+              <h5>
+                <span title="Aproximado en pesos mexicanos" class="mdi mdi-coin">
+                  {{ translate("RAISED") }}: ${{ mxn | number_i18n(2) }}
+                </span>
+              </h5>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class="container">
+        <div class="one-third column center-text">
+          <a class="mdi mdi-48px mdi-twitter" target="_blank" href="https://twitter.com/intent/user?screen_name=minandoxmexico"></a>
+          <a class="mdi mdi-48px mdi-facebook" target="_blank" href="https://www.facebook.com/minandoxmexico"></a>
+          <a class="mdi mdi-48px mdi-google-plus" target="_blank" href="https://plus.google.com/116863243056845806036"></a>
+          <h5>{{ translate("FOLLOW_US") }}</h5>
+        </div>
+        <div class="one-third column center-text">
+          <a class="button button-primary main-button mdi mdi-comment-text-outline" href="/minar"> CHAT &amp; STATS</a>
+          <p class="section-description"><a href="/#faq">{{ translate("HOW_IT_WORKS") }}</a></p>
+        </div>
+        <div class="one-third column center-text">
+          <a class="mdi mdi-48px mdi-facebook-box" target="_blank"
+            href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fminandoxmexico.org%2F">
+          </a>
+          <a class="mdi mdi-48px mdi-twitter-box" target="_blank"
+            href="https://twitter.com/share?url=https%3A%2F%2Fminandoxmexico.org%2F&text=Ayuda%20a%20la%20reconstrucción%20de%20México%20desde%20tu%20computadora">
+          </a>
+          <a class="mdi mdi-48px mdi-google-plus-box" target="_blank"
+            href="https://plus.google.com/share?url=https%3A%2F%2Fminandoxmexico.org%2F">
+          </a>
+          <h5>{{ translate("SHARE") }}</h5>
+        </div>
+      </div>
+    </div>
+
+    <div class="section categories categories-gray">
+      <div class="container">
+        <!-- faq -->
+        <h2 class="section-heading mdi mdi-leaf"> Bioconstrucción</h2>
+        <div clas="section-description">
+          <h4>Por Diego Algara</h4>
+<div style="white-space: pre-wrap; text-align: justify">
+El pasado Sábado 7 de Octubre del 2017, en el Encuentro Civilicionario del <a href="http://huertoromaverde.org/" target="_blank">Huerto Roma Verde</a>, después de un par de días de estar conversando con su equipo para formar una alianza, expusimos por primera vez nuestro proyecto a su comunidad.
+Creemos que el Huerto Roma Verde tiene varias iniciativas para ayudar a las zonas más afectadas, que podrían tener un gran impacto, y cuenta con una gran red de voluntarios con la que pueden hacer uso de los recursos de forma efectiva y transparente.
+En especial nos llama la atención su proyecto de "Bio Reconstruye", que se alinea con nuestro propósito, por lo que hemos decidido destinar los recursos que se recauden en Minando x México a dicha causa, copiamos aquí su Manifiesto:
+<br>
+<h4 class="center-text">
+Bio Reconstruye
+Huerto Roma Verde
+</h4>
+Bio Reconstruye es un proyecto que surge por la asociación entre una red transdisciplinaria de ciudadanos integrada por ambientalistas, permacultores, bioconstructores, promotores de tecnologías alternativas y sostenibles, hojalateros sociales, ingenieros, change makers, civilizionarios y muchos más.
+La unión de este colectivo tan diverso nace por un deseo en común, el de colaborar y apoyar a las personas y familias que perdieron o sufrieron serios daños en sus viviendas como consecuencia del terremoto que cimbró al centro del país el pasado 19 de septiembre, afectando principalmente a los estados de Chiapas, Ciudad de México, Estado de México, Morelos, Oaxaca y Puebla.
+Después de los recientes acontecimientos que sacudieron a la nación, nuestra postura es la de tomar a este suceso como un impulso que nos lleve a la Bio re-construcción de las zonas afectadas a través de soluciones que contemplen el bienestar común a corto y largo plazo, en las que se procuren modos de vida que consideren la salud ambiental, reconociendo los límites biológicos de nuestro planeta, y con las cuales reconectemos con el sentido comunitario y el consecuente empoderamiento que esto trae.
+En Bio Reconstruye consideramos a la Naturaleza como un Ser Sagrado y Vivo.
+Comprendemos que somos parte de ella, y que NO es un recurso ni económico, ni material al cual podemos seguir explotando y contaminando a diestra y siniestra.
+México necesita un cambio profundo, y percibimos a la adversidad como una gran oportunidad para comenzar a proponer formas alternativas de establecer comunidades concientes, autogestivas, en dónde se regenere el tejido social y en las cuáles se desarrolle la capacidad de resiliencia, la cual en el contexto de comunidades y poblaciones se refiere a la habilidad para no colapsarse, responder creativamente a los cambios y contar con la habilidad para adaptarse a los reveses climáticos y geográficos que cada día se irán presentando con más fuerza en nuestro planeta en consecuencia al evidente cambio climático y al pico del petróleo.
+<br>
+Entre nuestros objetivos se encuentran:
+<ul>
+<li>Impulsar el diseño y construcción sostenible de viviendas y edificaciones con materiales naturales, en dónde se implementen tecnologías limpias que estén en armonía tanto con el contexto social y cultural, como con el manejo sostenible del medio ambiente.</li>
+<li>Encauzar nuestro esfuerzo en la bio reconstrucción de los estados más afectados por el sismo.</li>
+<li>Informar, involucrar y capacitar a comunidades enteras en un proceso de transformación en el que se reconozca la necesidad de transitar hacia modos de vida sostenibles de una manera paulatina y organizada.</li>
+<li>Sugerir la creación de Eco-Comunidades, asentamientos humanos que interactúen con el medio ambiente de una forma respetuosa y sostenible.</li>
+<li>Buscamos la bio reconstrucción de casas y centros comunitarios con un costo accesible, que utilice materiales con bajo impacto al medio ambiente y los cuáles
+sean obtenidos en zonas cercanas a cada comunidad, adaptándose al clima, a sus necesidades específicas y a sus usos y costumbres.</li>
+<li>Seguir un proceso de diagnóstico participativo, consulta y acercamiento previo con la población, planeación y ejecución de la bio reconstrucción con esquemas y diseños basados en la Permacultura y en modelos de Viviendas Sostenibles.</li>
+<li>Se trabajará con técnicas de bio construcción sustentadas en diversas investigaciones que garanticen la calidad y resistencia estructural adecuada.</li>
+<li>Re-introducir y capacitar en las comunidades los oficios de construcción de casas con técnicas sostenibles, agricultura orgánica, etc.</li>
+</ul>
+La transición es inevitable y ha llegado el momento de dar los primeros pasos hacia ella.
+Nos encontramos ante una posibilidad de renacimiento de comunidades que cultiven su propia comida, generen su propia energía y construyan sus propias casas utilizando materiales locales. Llego la hora de tejer redes de apoyo mutuo, desinteresado y gratuito entre ciudadanos, es momento de cambiar de perspectivas, pensar y crear diferente, de acuerdo a la realidad y necesidades actuales, de trabajar para aumentar el nivel de conciencia, informando, capacitando, colaborando y creando sinergia entre todos los ciudadanos involucrados, tanto los afectados como los que contamos con la voluntad de asistirlos e ir cambiando la dirección de nuestro país.
+Nos negamos a seguir repitiendo los mismos errores generación tras generación, estamos determinados a tomar las riendas de nuestro país de una forma creativa, pacífica, organizada y transparente, siendo la principal premisa la de servir a los mexicanos y mexicanas que más lo necesitan.
+Sigamos creando el otro México que tanto añoramos, sigamos abriendo nuevos caminos, centímetro a centímetro, persona por persona, comunidad por comunidad, porque el poder de la transformación y del cambio, se encuentra en todos y cada uno de nosotros.
+</div>
+        </div>
+      </div>
+    </div>
+    <div class="section categories categories-white">
+      <div class="container">
+        <!-- contact -->
+        <h2 class="section-heading mdi mdi-comment-account-outline" id="contact"> {{ translate("CONTACT") }}</h2>
+        <div clas="section-description">
+          <div class="row">
+            <div class="column one-half right-text">
+              <h5><a href="https://plus.google.com/communities/100344561271735360788" class="mdi mdi-google-plus-box" target="_blank" dir="rtl"> {{ translate("GPLUS") }}</a></h5>
+              <h5><a href="https://plus.google.com/116863243056845806036" class="mdi mdi-google-plus" target="_blank" dir="rtl"> Google Plus</a></h5>
+              <h5><a href="mailto:info@minandoxmexico.org" class="mdi mdi-email-outline" title="info@minandoxmexico.org" dir="rtl"> {{ translate("MAIL") }}</a></h5>
+            </div>
+            <div class="column one-half">
+              <h5><a href="https://www.facebook.com/groups/minandoxmexico/" class="mdi mdi-facebook-box" target="_blank"> {{ translate("FACEBOOK_GROUP") }}</a></h5>
+              <h5><a href="https://www.facebook.com/minandoxmexico/" class="mdi mdi-facebook" target="_blank"> Facebook</a></h5>
+              <h5><a href="https://twitter.com/minandoxmexico" class="mdi mdi-twitter" target="_blank"> Twitter</a></h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="center-text">
+      <span>{{ translate("DEVELOPED_BY") }} <a target="_blank" href="https://nubenautas.com/">
+        <img src="https://nubenautas.com/imgs/nubenautas.svg" height="64px" style="vertical-align: middle;"> Nubenautas</a>
+      </span>
+    </div>
+  </div>
+</body>
+</html>
