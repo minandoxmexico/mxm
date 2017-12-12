@@ -209,7 +209,7 @@ $(($)=>{
     app.siteHashesPerSecond = data.hashesPerSecond
     app.siteHashesTotal = data.hashesTotal
     app.xmr = data.xmrPending + data.xmrPaid + 0.5 // Carol
-    app.xmr_usd = 150
+    app.xmr_usd = 250
     app.usd_mxn = 18.5
     app.mxn = app.xmr * app.xmr_usd * app.usd_mxn
   })
