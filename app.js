@@ -15,7 +15,7 @@ app.use(logger('dev', {
     skip: function (req, res) { return res.statusCode < 400 }
   })
 )
-app.use(express.static(path.join(__dirname, 'public'),{extensions: ['html']}))
+app.use(express.static(path.join(__dirname, 'docs'),{extensions: ['html']}))
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
